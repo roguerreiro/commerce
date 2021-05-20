@@ -2,6 +2,37 @@
 
 {% block body %}
     <h2>Active Listings</h2>
+    <hr />
+    {% if not listings %}
+      {% if user.is_authenticated %}
+        <p>It looks like there are no active listings! Start one <a href="{% url 'new' %}">here</a>.</p>
+      {% else %}
+        <p>It looks like there are no active listings! <a href="{% url 'login' %}">Log in</a> to create a new one.</p>
+      {% endif %}
+    {% endif %}
 
-    TODO
+    {% for listing in listings %}
+        <div class="row">
+          <div class="col-sm-4">
+            {% if listing.auction.image %}
+            <img src="{{listing.auction.image}}">
+
+            {% else %}
+            <h4>No image available.</h4>
+
+            {% endif %}
+          </div>
+          <div class="col-sm-8">
+              <h1><a href='/listing/{{ listing.auction.id }}'>{{ listing.auction.item }}</a></h1>
+              <p>{{ listing.auction.description }}</p>
+              {% if listing.auction.category == "No category" %}
+                <p><strong>Category: </strong>No category</p>
+              {% else %}
+                <p><strong>Category: </strong><a href="/category/{{ listing.auction.category }}">{{ listing.auction.category }}</a></p>
+              {% endif %}
+              <p><strong>Highest bid: </strong> ${{ listing.bid }}</p>
+          </div>
+        </div>
+        <hr />
+    {% endfor %}
 {% endblock %}

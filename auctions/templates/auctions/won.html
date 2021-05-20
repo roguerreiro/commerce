@@ -1,0 +1,37 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Auctions I won{% endblock %}
+
+{% block body %}
+    <h2>Auctions that I won</h2>
+    <hr />
+    {% if listings %}
+      {% for listing in listings %}
+            <div class="row">
+              <div class="col-sm-4">
+                {% if listing.auction.image %}
+                <img src="{{listing.auction.image}}">
+
+                {% else %}
+                <h4>No image available.</h4>
+
+                {% endif %}
+              </div>
+              <div class="col-sm-8">
+                  <h1><a href='/listing/{{ listing.auction.id }}'>{{ listing.auction.item }}</a></h1>
+                  <p>{{ listing.auction.description }}</p>
+                  {% if listing.auction.category == "No category" %}
+                    <p><strong>Category: </strong>No category</p>
+                  {% else %}
+                    <p><strong>Category: </strong><a href="/category/{{ listing.auction.category }}">{{ listing.auction.category }}</a></p>
+                  {% endif %}
+                  <p><strong>My bid: </strong> ${{ listing.bid }}</p>
+              </div>
+            </div>
+            <hr />
+      {% endfor %}
+    {% else %}
+      <h4>It looks like you haven't won any auctions yet!</h4>
+      <p>Try searching for active auctions to bid on <a href="{% url 'index' %}">here</a>.</p>
+    {% endif %}
+{% endblock %}

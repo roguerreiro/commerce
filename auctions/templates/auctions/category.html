@@ -1,0 +1,41 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}{{ category }}{% endblock %}
+
+{% block body %}
+    {% if message %}
+      <h2>It seems there is a problem!</h2>
+      <p>{{ message }}</p>
+      <p>Try heading to the <a href="/category/all">category list</a> to see existing categories!</p>
+    {% else %}
+      <h2>Listings for {{ category }}</h2>
+      <hr />
+      {% if listings %}
+        {% for listing in listings %}
+            <div class="row">
+              <div class="col-sm-4">
+                {% if listing.auction.image %}
+                <img src="{{listing.auction.image}}">
+
+                {% else %}
+                <h4>No image available.</h4>
+
+                {% endif %}
+              </div>
+              <div class="col-sm-8">
+                  <h1><a href='/listing/{{ listing.auction.id }}'>{{ listing.auction.item }}</a></h1>
+                  <p>{{ listing.auction.description }}</p>
+                  <p><strong>Highest bid: </strong> ${{ listing.bid }}</p>
+                  {% if not listing.auction.active %}
+                  <p>This listing is no longer active.</p>
+                  {% endif %}
+              </div>
+            </div>
+            <hr />
+        {% endfor %}
+      {% else %}
+        <p>It seems there are no listings for this category!</p>
+        <p>Try searching for another category <a href="/category/all">here</a>.</p>
+      {% endif %}
+    {% endif %}
+{% endblock %}

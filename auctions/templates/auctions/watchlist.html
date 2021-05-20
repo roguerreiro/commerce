@@ -1,0 +1,40 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Watchlist{% endblock %}
+
+{% block body %}
+    <h2>Listings on my Watchlist</h2>
+    <hr />
+    {% if listings %}
+      {% for listing in listings %}
+            <div class="row">
+              <div class="col-sm-4">
+                {% if listing.auction.image %}
+                <img src="{{listing.auction.image}}">
+
+                {% else %}
+                <h4>No image available.</h4>
+
+                {% endif %}
+              </div>
+              <div class="col-sm-8">
+                  <h1><a href='/listing/{{ listing.auction.id }}'>{{ listing.auction.item }}</a></h1>
+                  <p>{{ listing.auction.description }}</p>
+                  {% if listing.auction.category == "No category" %}
+                    <p><strong>Category: </strong>No category</p>
+                  {% else %}
+                    <p><strong>Category: </strong><a href="/category/{{ listing.auction.category }}">{{ listing.auction.category }}</a></p>
+                  {% endif %}
+                  <p><strong>Highest bid: </strong> ${{ listing.bid }}</p>
+                  {% if not listing.auction.active %}
+                    <p>This listing is no longer active.</p>
+                  {% endif %}
+              </div>
+            </div>
+            <hr />
+      {% endfor %}
+    {% else %}
+      <h4>It looks like you don't have anything on your watchlist!</h4>
+      <p>Try searching for active auctions <a href="{% url 'index' %}">here</a>.</p>
+    {% endif %}
+{% endblock %}

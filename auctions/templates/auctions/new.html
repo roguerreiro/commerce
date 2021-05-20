@@ -1,0 +1,38 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}Create listing{% endblock %}
+
+{% block body %}
+<h1>Create new listing</h1>
+
+<h3>Fill in the fields below to create a new listing.</h3>
+
+{% if message %}
+  <p>{{ message }}</p>
+{% endif %}
+
+<form action="{% url 'new' %}" method="post">
+    {% csrf_token %}
+    <p>Title:</p>
+    <input type="text" id="title" name="title" maxlength="100" class="form-control" />
+    <p>Description:</p>
+    <textarea id="description" name="description" maxlength="300" class="form-control"></textarea>
+    <p>Starting bid:</p>
+    <input type="number" id="starterbid" name="starterbid" min="0" step="0.01" class="form-control" />
+    <p>Image URL (optional):</p>
+    <input type="url" id="image" name="image" class="form-control" />
+    <p>Category:</p>
+    <select name="category" id="category" class="form-control" >
+      <option value="" disabled selected>Select a category</option>
+      <option>No category</option>
+      <option value="Books">Books</option>
+      <option value="Beauty and makeup">Beauty and makeup</option>
+      <option value="Clothing">Clothing</option>
+      <option value="Electronics">Electronics</option>
+      <option value="Home">Home</option>
+      <option value="Toys">Toys</option>
+    </select>
+    <p></p>
+    <button type="submit" class="btn btn-success">Create listing</button>
+</form>
+{% endblock %}
